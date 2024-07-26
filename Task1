@@ -1,0 +1,28 @@
+!pip install diffusers
+import torch
+from diffusers import StableDiffusionPipeline
+from PIL import Image
+
+# Define the model ID and device
+model_id = "CompVis/stable-diffusion-v1-4"
+device = "cuda"  # or "cpu" if you don't have a GPU
+
+# Load the Stable Diffusion pipeline with the specified precision
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to(device)
+
+# Define the prompt for image generation
+prompt = "a photo of panda eating"
+
+# Generate the image
+result = pipe(prompt)
+image = result.images[0]
+
+# Save the image to a file
+image.save("save.png")
+
+# Optional: Display the image (if running in a Jupyter notebook or similar environment)
+image.show()
+
+# Print a message confirming the image has been saved
+print("Image generated and saved as 'save.png'.")
